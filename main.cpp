@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <curl/curl.h>
+#include <Data/Receipt.h>
 #include "json.hpp"  // nlohmann JSON library
 
 using json = nlohmann::json;
@@ -10,7 +11,6 @@ size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* use
     userp->append((char*)contents, size * nmemb);
     return size * nmemb;
 }
-
 // Function to fetch JSON data from GitHub
 std::string fetchJSONFile(const std::string& url) {
     CURL* curl;
