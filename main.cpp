@@ -33,7 +33,7 @@ std::string fetchJSONFile(const std::string& url) {
 
 int main() {
     // URL of the JSON file in your GitHub repository
-    std::string url = "https://raw.githubusercontent.com/your-username/your-repo/main/data.json";
+    std::string url = "https://github.com/tnguyen101/BillSplitter/blob/main/Data/data.json";
 
     // Fetch the JSON data
     std::string jsonData = fetchJSONFile(url);
