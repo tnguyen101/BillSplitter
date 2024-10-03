@@ -1,0 +1,12 @@
+[
+    {
+      "name": "Sushi Dinner",
+      "amount": "$80.00",
+      "people": "Anthony, Travis"
+    },
+    {
+      "name": "Movie Night",
+      "amount": "$45.00",
+      "people": "Anthony, Dave, Phil"
+    }
+  ]  
