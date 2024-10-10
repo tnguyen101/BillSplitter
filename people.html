@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BillSplitter - People</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            color: #343a40;
+            background-color: #f8f9fa;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            font-family: 'Arial Black', sans-serif;
+            font-size: 2em;
+            color: #007BFF;
+            margin-bottom: 20px;
+        }
+
+        nav {
+            background-color: #007BFF;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        nav a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: #ffffff;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #e4e4e4;
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 15px;
+            display: inline-block;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #ffffff;
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .delete-button {
+            color: red;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>BillSplitter</h1>
+    
+    <nav>
+        <a href="#">View</a>
+        <a href="#">Manage</a>
+        <a href="#">People</a>
+    </nav>
+
+    <h2>Add Person</h2>
+    <form id="personForm">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" required><br>
+        <input type="submit" value="Add">
+    </form>
+
+    <h2>People List</h2>
+    <ul id="peopleList">
+        <li>Anthony <span class="delete-button">X</span></li>
+        <li>Travis <span class="delete-button">X</span></li>
+        <li>Nyan <span class="delete-button">X</span></li>
+    </ul>
+
+    <script>
+        document.getElementById('personForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const peopleList = document.getElementById('peopleList');
+            const newPerson = document.createElement('li');
+            newPerson.innerHTML = `${name} <span class="delete-button">X</span>`;
+            peopleList.appendChild(newPerson);
+
+            this.reset();
+        });
+
+        document.getElementById('peopleList').addEventListener('click', function(e) {
+            if (e.target.classList.contains('delete-button')) {
+                if (confirm('Are you sure you want to remove this person?')) {
+                    e.target.closest('li').remove();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
