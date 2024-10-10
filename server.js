@@ -15,6 +15,10 @@ app.get('/people', (req, res) => {
   res.sendFile(path.join(__dirname, 'people.html'));
 });
 
+app.get('/data.json', (req, res) => {
+  res.sendFile(path.join(__dirname, 'data.json'));
+});
+
 // Start the server
 const port = 3000;
 app.listen(port, () => {
