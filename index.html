@@ -85,21 +85,33 @@
     <p>Here are your current expenses:</p>
     
     <table>
-      <tr>
-        <th>Name</th>
-        <th>Amount</th>
-        <th>People</th>
-      </tr>
-      <tr>
-        <td>Sushi Dinner</td>
-        <td>$80.00</td>
-        <td>Anthony, Travis</td>
-      </tr>
-      <tr>
-        <td>Breakfast</td>
-        <td>$38.00</td>
-        <td>Anthony, Travis, Nyan</td>
-      </tr>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Amount</th>
+                <th>People</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <!-- Rows will be added here dynamically -->
+        </tbody>
     </table>
+    <script>
+        fetch('/data.json')
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.getElementById('tableBody');
+            data.forEach(expense => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${expense.name}</td>
+                    <td>${expense.amount}</td>
+                    <td>${expense.people}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Error fetching data:', error));
+    </script>
 </body>
 </html>
