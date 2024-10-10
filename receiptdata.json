@@ -1,21 +1,22 @@
 {
     "receipts" : [
         {
-            "ID" : "0",
-            "item" : [
+            "ID" : 0,
+            "items" : [
                 {
+                    "itemID" : 0,
                     "name" : "salmond",
-                    "price" : "$10",
+                    "price" : 10,
                     "people" : ["john"]
                 }
             ],
             "group" : [
                 {
                     "name" : "john",
-                    "owed" : "0"
+                    "owed" : 10
                 }
             ],
-            "total" : "0"
+            "total" : 0
         }
     ]
 }

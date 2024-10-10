@@ -1,14 +1,36 @@
 import json
 
 def addperson(person, id):
-    with open('Recieptdata.json', 'r+') as file:
-        x = {"name" : person,
-             "owed" : "0"
-            }
-        file_data = json.load(file)
-        file_data.append(x)
-        file_data["receipt"]["group"].append(x)
-        json.dump(file_data, file, indent = 4)
+    x = {"name" : person,
+        "owed" : "0"
+        }
+    with open('recieptdata.json', 'r+') as file:
+        data = json.load(file)
+    for receipt in data["receipts"]:
+        if id == receipt["ID"]:
+            receipt["group"].append(x)
+            break
+    json.dump(data, file, indent = 4)
+
+def rmperson(person, id):
+    with open('recieptdata.json', 'r+') as file:
+        data = json.load(file)
+    for receipt in data["receipts"]:
+        if id == receipt["ID"]:
+            for item in receipt["items"]:
+
+            receipt["group"].remove(person)
+            
+def removePersonItem(person, item, id):
+    
+def redistribution(person, item, id):
+    with open('recieptdata.json', 'r+') as file:
+        data = json.load(file)
+    for receipt in data["receipts"]:
+        if id == receipt["ID"]:
+            for item in receipt["items"]:
+
+
 # add receipt
 # remove person
 # remove receipt(would also update the ID if necessary)
