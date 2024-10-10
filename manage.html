@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BillSplitter - Manage</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            color: #343a40;
+            background-color: #f8f9fa;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            font-family: 'Arial Black', sans-serif;
+            font-size: 2em;
+            color: #007BFF;
+            margin-bottom: 20px;
+        }
+
+        nav {
+            background-color: #007BFF;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        nav a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: #ffffff;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #e4e4e4;
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 15px;
+            display: inline-block;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            font-family: 'Arial', sans-serif;
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+            margin-top: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 12px;
+            font-size: 1.1em;
+        }
+        
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #e4e4e4;
+        }
+
+        .delete-button {
+            color: red;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>BillSplitter</h1>
+    
+    <nav>
+        <a href="#">View</a>
+        <a href="#">Manage</a>
+        <a href="#">People</a>
+    </nav>
+
+    <h2>Add New Expense</h2>
+    <form id="expenseForm">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" required><br>
+
+        <label for="price">Price:</label><br>
+        <input type="number" id="price" name="price" step="0.01" required><br>
+
+        <label>People:</label><br>
+        <input type="checkbox" id="dave" name="people" value="Dave">
+        <label for="dave">Dave</label><br>
+        <input type="checkbox" id="tim" name="people" value="Tim">
+        <label for="tim">Tim</label><br>
+        <input type="checkbox" id="andrew" name="people" value="Andrew">
+        <label for="andrew">Andrew</label><br>
+        <input type="checkbox" id="jerry" name="people" value="Jerry">
+        <label for="jerry">Jerry</label><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <h2>Existing Expenses</h2>
+    <table id="expenseTable">
+        <tr>
+            <th>Name</th>
+            <th>Amount</th>
+            <th>People</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td>Sushi Dinner</td>
+            <td>$80.00</td>
+            <td>Anthony, Travis</td>
+            <td><span class="delete-button">X</span></td>
+        </tr>
+        <tr>
+            <td>Breakfast</td>
+            <td>$38.00</td>
+            <td>Anthony, Travis, Nyan</td>
+            <td><span class="delete-button">X</span></td>
+        </tr>
+    </table>
+
+    <script>
+        document.getElementById('expenseForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const price = document.getElementById('price').value;
+            const people = Array.from(document.querySelectorAll('input[name="people"]:checked'))
+                .map(checkbox => checkbox.value)
+                .join(', ');
+
+            const table = document.getElementById('expenseTable');
+            const newRow = table.insertRow(-1);
+            newRow.innerHTML = `
+                <td>${name}</td>
+                <td>$${parseFloat(price).toFixed(2)}</td>
+                <td>${people}</td>
+                <td><span class="delete-button">X</span></td>
+            `;
+
+            this.reset();
+        });
+
+        document.getElementById('expenseTable').addEventListener('click', function(e) {
+            if (e.target.classList.contains('delete-button')) {
+                if (confirm('Are you sure you want to delete this expense?')) {
+                    e.target.closest('tr').remove();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
