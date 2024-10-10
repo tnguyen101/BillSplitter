@@ -1,53 +1,105 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BillSplitter</title>
+    
     <style>
-      table {
-        font-family: arial, sans-serif;
-        border-collapse: collapse;
-        width: 100%;
-      }
-      
-      td, th {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 8px;
-      }
-      
-      tr:nth-child(even) {
-        background-color: #dddddd;
-      }
-      nav {
+    body {
+        font-family: 'Arial', sans-serif;
+        font-size: 16px;
+        color: #343a40;
+        background-color: #f8f9fa;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+    }
+
+    h1 {
+        font-family: 'Arial Black', sans-serif;
+        font-size: 2em;
+        color: #007BFF;
         margin-bottom: 20px;
-      }
-      nav a {
+    }
+
+    nav {
+        background-color: #007BFF;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+    }
+
+    nav a {
         margin-right: 15px;
         text-decoration: none;
-        color: #0066cc;
-      }
-      </style>
+        color: #ffffff;
+        transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+        color: #e4e4e4;
+    }
+
+    table {
+        font-family: 'Arial', sans-serif;
+        border-collapse: separate;
+        border-spacing: 0;
+        width: 100%;
+        margin-top: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        border-radius: 5px;
+        overflow: hidden;
+    }
+    
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 12px;
+        font-size: 1.1em;
+    }
+    
+    th {
+        background-color: #007BFF;
+        color: white;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    tr:hover {
+        background-color: #e4e4e4;
+    }
+    </style>
 </head>
 <body>
     <h1>Welcome to BillSplitter</h1>
+    
     <nav>
         <a href="#">View</a>
         <a href="#">Manage</a>
         <a href="#">People</a>
     </nav>
+    
     <p>Here are your current expenses:</p>
-    <table id="expensesTable">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Amount</th>
-                <th>People</th>
-            </tr>
-        </thead>
-        <tbody id="tableBody">
-            <!-- Table content will be dynamically inserted here -->
-        </tbody>
+    
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Amount</th>
+        <th>People</th>
+      </tr>
+      <tr>
+        <td>Sushi Dinner</td>
+        <td>$80.00</td>
+        <td>Anthony, Travis</td>
+      </tr>
+      <tr>
+        <td>Breakfast</td>
+        <td>$38.00</td>
+        <td>Anthony, Travis, Nyan</td>
+      </tr>
     </table>
-    <script src="script.js"></script>
 </body>
 </html>
