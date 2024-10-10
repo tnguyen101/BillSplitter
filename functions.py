@@ -9,4 +9,8 @@ def addperson(person, id):
         file_data.append(x)
         file_data["receipt"]["group"].append(x)
         json.dump(file_data, file, indent = 4)
-
+# add receipt
+# remove person
+# remove receipt(would also update the ID if necessary)
+# remove and add person from item(would need to redistribute;' the amount owed if people already in the item)
+# redistribution
