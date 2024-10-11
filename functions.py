@@ -4,16 +4,13 @@ def addperson(person, id):
     x = {"name" : person,
         "owed" : "0"
         }
-    with open('recieptdata.json', 'r+') as file:
+    with open('receipt_data.json', 'r+') as file:
         data = json.load(file)
-    for receipt in data["receipts"]:
-        if id == receipt["ID"]:
-            receipt["group"].append(x)
-            break
+    data["receipts"][id]["person"].append(x)
     json.dump(data, file, indent = 4)
 
 def rmperson(person, id):
-    with open('recieptdata.json', 'r+') as file:
+    with open('receipt_data.json', 'r+') as file:
         data = json.load(file)
     for receipt in data["receipts"]:
         if id == receipt["ID"]:
@@ -21,14 +18,32 @@ def rmperson(person, id):
 
             receipt["group"].remove(person)
             
-def removePersonItem(person, item, id):
-    
-def redistribution(person, item, id):
-    with open('recieptdata.json', 'r+') as file:
+def removePersonItem(person, id, itemID):
+    with open('receipt_data.json', 'r+') as file:
         data = json.load(file)
-    for receipt in data["receipts"]:
-        if id == receipt["ID"]:
-            for item in receipt["items"]:
+    redistributtion(person, id, itemID)
+    data["receipts"][id]["item"][itemID]["people"].remove(person)
+
+
+def redistribution(person, id, itemID):
+    with open('receipt_data.json', 'r+') as file:
+        data = json.load(file)
+    group = []
+    price = data["receipts"][id]["item"][itemID]["price"]
+    for people in data["receipts"][id]["item"][itemID]["people"]:
+        group.append(person)
+    for people in data["receipts"][id]["group"]:
+        for peopleR in group:
+            if people["name"] == peopleR:
+                people["owed"] =- price/group.lens()
+                break
+    group.remove(person)
+    for people in data["receipts"][id]["group"]:
+        for peopleR in group:
+            if people["name"] == peopleR:
+                people["owed"] =+ price/group.lens()
+                break
+        
 
 
 # add receipt
