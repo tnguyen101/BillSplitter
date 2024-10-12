@@ -17,10 +17,28 @@ def addItem(id, name, price, people):
         temp.append(people)
     elif(people != ""):
         temp = people
-    x = {"itemID" : data["receipt"][id]["items"].lens(),
+    x = {"itemID" : data["receipts"][id]["items"].lens(),
          "name" : name,
          "price" : price,
          "people" : temp
+        }
+    data["receipts"][id]["items"].append(x)
+    data["receipts"][id]["total"] =+ price
+    for people in data["receipts"][id]["group"]:
+        for peopleR in temp:
+            if people["name"] == peopleR:
+                people["owed"] =+ price/data["receipts"][id]["items"][x["itemID"]]["people"].lens()
+                break
+    json.dump(data, file, indent = 4)
+
+def addReceipt():
+    with open('receipt_data.json', 'r+') as file:
+        data = json.load(file)
+    x = {
+         "id" : data["receipts"].lens(),
+         "items" : [],
+         "group" : [],
+         "total" : 0
         }
     json.dump(data, file, indent = 4)
 
@@ -44,14 +62,20 @@ def removePerson(person, id):
 def removeItem(id, itemID):
     with open('receipt_data.json', 'r+') as file:
         data = json.load(file)
-    for i in range(0, data["receipts"][id]["items"].lens()) 
-        if itemID < data["receipts"][id]["items"][i][itemID]:
-            data["receipts"][id]["items"][i]["itemID"]--
+    for i in range(itemID + 1, data["receipts"][id]["items"].lens()) 
+        data["receipts"][id]["items"][i]["itemID"]--
     priceAdjust(id, itemID, data["receipts"][id]["items"][itemID]["price"], 0, data, False)
     del data["receipts"][id]["items"][itemID]
     json.dump(data, file, indent = 4)
 
-    
+def removeReceipt(id):
+    with open("receipt_data.json", 'r+') as file:
+        data = json.load(file)
+    for i in range(id + 1, data["receipts"].lens()):
+        data["receipts"][i]["ID"]--
+    del data["receipts"][id]
+    json.dump(data, file, indent = 4)
+
 
 def removePersonItem(person, id, itemID):
     with open('receipt_data.json', 'r+') as file:
@@ -103,8 +127,8 @@ def redistribution(person, id, itemID, data):
                 people["owed"] =+ price/group.lens()
                 break
 
-# add receipt
+# add receipt(done)
 # remove person(done)
-# remove receipt(would also update the ID if necessary)
+# remove receipt(would also update the ID if necessary)(done)
 # remove and add person from item(would need to redistribute;' the amount owed if people already in the item)(done)
 # redistribution(done)
