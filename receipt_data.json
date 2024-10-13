@@ -1,22 +1,85 @@
 {
-    "receipts" : [
+    "receipts": [
         {
-            "ID" : 0,
-            "items" : [
+            "id": 0,
+            "items": [
                 {
-                    "itemID" : 0,
-                    "name" : "salmond",
-                    "price" : 10,
-                    "people" : ["john"]
+                    "itemID": 0,
+                    "name": "Salmond",
+                    "price": 20,
+                    "people": [
+                        "Anthony",
+                        "Travis"
+                    ]
+                },
+                {
+                    "itemID": 1,
+                    "name": "Movie",
+                    "price": 30,
+                    "people": [
+                        "Anthony",
+                        "Travis",
+                        "Dave"
+                    ]
+                },
+                {
+                    "itemID": 2,
+                    "name": "Dinner",
+                    "price": 60,
+                    "people": [
+                        "Anthony",
+                        "Dave",
+                        "Travis"
+                    ]
                 }
             ],
-            "group" : [
+            "group": [
                 {
-                    "name" : "john",
-                    "owed" : 10
+                    "name": "Anthony",
+                    "owed": 40.0
+                },
+                {
+                    "name": "Travis",
+                    "owed": 40.0
+                },
+                {
+                    "name": "Dave",
+                    "owed": 30.0
                 }
             ],
-            "total" : 0
+            "total": 110
+        },
+        {
+            "id": 1,
+            "items": [],
+            "group": [
+                {
+                    "name": "Travis",
+                    "owed": "0"
+                }
+            ],
+            "total": 0
+        },
+        {
+            "id": 2,
+            "items": [],
+            "group": [
+                {
+                    "name": "Dave",
+                    "owed": 0
+                },
+                {
+                    "name": "Travis",
+                    "owed": 0
+                }
+            ],
+            "total": 0
+        },
+        {
+            "id": 3,
+            "items": [],
+            "group": [],
+            "total": 0
         }
     ]
 }

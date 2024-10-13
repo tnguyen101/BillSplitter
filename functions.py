@@ -1,130 +1,135 @@
 import json
 
-def addperson(person, id):
+def addPerson(person, id):# works
     x = {"name" : person,
-        "owed" : "0"
+        "owed" : 0
         }
     with open('receipt_data.json', 'r+') as file:
         data = json.load(file)
-    data["receipts"][id]["person"].append(x)
-    json.dump(data, file, indent = 4)
+        data["receipts"][id]["group"].append(x)
+        file.seek(0)
+        json.dump(data, file, indent = 4)
 
-def addItem(id, name, price, people):
+def addItem(id, name, price, people):# works
     with open('receipt_data.json', 'r+') as file:
         data = json.load(file)
-    temp = []
-    if !isinstance(people, list):
-        temp.append(people)
-    elif(people != ""):
-        temp = people
-    x = {"itemID" : data["receipts"][id]["items"].lens(),
-         "name" : name,
-         "price" : price,
-         "people" : temp
-        }
-    data["receipts"][id]["items"].append(x)
-    data["receipts"][id]["total"] =+ price
-    for people in data["receipts"][id]["group"]:
-        for peopleR in temp:
-            if people["name"] == peopleR:
-                people["owed"] =+ price/data["receipts"][id]["items"][x["itemID"]]["people"].lens()
+        x = {"itemID" : len(data["receipts"][id]["items"]),
+            "name" : name,
+            "price" : price,
+            "people" : people
+            }
+        data["receipts"][id]["items"].append(x)
+        data["receipts"][id]["total"] += price
+        for group in data["receipts"][id]["group"]:
+            for peopleR in people:
+                if group["name"] == peopleR:
+                    group["owed"] += price/len(data["receipts"][id]["items"][x["itemID"]]["people"])
+                    break
+        file.seek(0)
+        json.dump(data, file, indent = 4)
+
+def addReceipt():#works
+    with open('receipt_data.json', 'r+') as file:
+        data = json.load(file)
+        x = {
+            "id" : len(data["receipts"]),
+            "items" : [],
+            "group" : [],
+            "total" : 0
+            }
+        data["receipts"].append(x)
+        file.seek(0)
+        json.dump(data, file, indent = 4)
+
+def addPersonItem(person, id, itemID): #works
+    with open('receipt_data.json', 'r+') as file:
+        data = json.load(file)
+        redistribution(person, id, itemID, data)
+        file.seek(0)
+        json.dump(data, file, indent = 4)
+
+def removePerson(person, id):# works
+    with open('receipt_data.json', 'r') as file:
+        data = json.load(file)
+        for item in data["receipts"][id]["items"]:
+            if person in item["people"]:
+                redistribution(person, id, item["itemID"], data)
+        for i in range(0, len(data["receipts"][id]["group"])):
+            if person == data["receipts"][id]["group"][i]["name"]:
+                data["receipts"][id]["group"].pop(i)
                 break
-    json.dump(data, file, indent = 4)
+    with open("receipt_data.json", 'w') as file:
+        json.dump(data, file, indent = 4)
 
-def addReceipt():
-    with open('receipt_data.json', 'r+') as file:
+def removeItem(id, itemID):# works
+    with open('receipt_data.json', 'r') as file:
         data = json.load(file)
-    x = {
-         "id" : data["receipts"].lens(),
-         "items" : [],
-         "group" : [],
-         "total" : 0
-        }
-    json.dump(data, file, indent = 4)
+        for i in range(itemID + 1, len(data["receipts"][id]["items"])):
+            data["receipts"][id]["items"][i]["itemID"] -= 1
+        priceAdjust(id, itemID, data["receipts"][id]["items"][itemID]["price"], 0, data, False)
+        del data["receipts"][id]["items"][itemID]
+    with open("receipt_data.json", 'w') as file:
+        json.dump(data, file, indent = 4)
 
-def addPersonItem(person, id, itemID):
-    with open('receipt_data.json', 'r+') as file:
+def removeReceipt(id):#works
+    with open("receipt_data.json", 'r') as file:
         data = json.load(file)
-    redistributtion(person, id, itemID, data)
-    data["receipts"][id]["items"][itemID]["people"].append(person)
-    json.dump(data, file, indent = 4)
+        for i in range(id, len(data["receipts"])):
+            data["receipts"][i]["id"] -= 1
+        data["receipts"].pop(id)
+    with open("receipt_data.json", 'w') as file:
+        json.dump(data, file, indent = 4)
 
-def removePerson(person, id):
-    with open('receipt_data.json', 'r+') as file:
+
+def removePersonItem(person, id, itemID):#works
+    with open('receipt_data.json', 'r') as file:
         data = json.load(file)
-    for item in data["receipts"][id]["items"]:
-        if person in item["people"]:
-            redistributtion(person, id, item["itemID"], data)
-            data["receipts"][id]["items"][itemID]["people"].remove(person)
-    receipt["group"].remove(person)
-    json.dump(data, file, indent = 4)
+        redistribution(person, id, itemID, data)
+    with open("receipt_data.json", 'w') as file:
+        json.dump(data, file, indent = 4)
 
-def removeItem(id, itemID):
-    with open('receipt_data.json', 'r+') as file:
+def changeItem(id, itemID, newName, newPrice):# works
+    with open('receipt_data.json', 'r') as file:
         data = json.load(file)
-    for i in range(itemID + 1, data["receipts"][id]["items"].lens()) 
-        data["receipts"][id]["items"][i]["itemID"]--
-    priceAdjust(id, itemID, data["receipts"][id]["items"][itemID]["price"], 0, data, False)
-    del data["receipts"][id]["items"][itemID]
-    json.dump(data, file, indent = 4)
+        data["receipts"][id]["items"][itemID]["name"] = newName
+        if data["receipts"][id]["items"][itemID]["price"] != newPrice:#if price are the same then it won't call the function
+            priceAdjust(id, itemID, data["receipts"][id]["items"][itemID]["price"], newPrice, data, True)
+        data["receipts"][id]["items"][itemID]["price"] = newPrice
+    with open("receipt_data.json", 'w') as file:
+        json.dump(data, file, indent = 4)
 
-def removeReceipt(id):
-    with open("receipt_data.json", 'r+') as file:
-        data = json.load(file)
-    for i in range(id + 1, data["receipts"].lens()):
-        data["receipts"][i]["ID"]--
-    del data["receipts"][id]
-    json.dump(data, file, indent = 4)
-
-
-def removePersonItem(person, id, itemID):
-    with open('receipt_data.json', 'r+') as file:
-        data = json.load(file)
-    redistributtion(person, id, itemID, data)
-    data["receipts"][id]["items"][itemID]["people"].remove(person)
-    json.dump(data, file, indent = 4)
-
-def changeItem(id, itemID, newName, newPrice):
-    with open('receipt_data.json', 'r+') as file:
-        data = json.load(file)
-    data["receipts"][id]["items"][itemID]["name"] = newName
-    if data["receipts"][id]["items"][itemID]["price"] == newPrice:#if price are the same then it won't call the function
-        priceAdjust(id, itemID, data["receipts"][id]["items"][itemID]["price"], newPrice, data, True)
-    json.dump(data, file, indent = 4)
-
-def priceAdjust(id, itemID, oldPrice, newPrice, data, changing):
+def priceAdjust(id, itemID, oldPrice, newPrice, data, changing):# works
     for people in data["receipts"][id]["group"]:
-        for peopleR in group:
+        for peopleR in data["receipts"][id]["items"][itemID]["people"]:
             if people["name"] == peopleR:
-                people["owed"] =- oldPrice/group.lens()
+                people["owed"] -= oldPrice/len(data["receipts"][id]["items"][itemID]["people"])
                 break
     # the condition below is for removing the item and if it does then it won't run that part
     if changing:
         for people in data["receipts"][id]["group"]:
-            for peopleR in group:
+            for peopleR in data["receipts"][id]["items"][itemID]["people"]:
                 if people["name"] == peopleR:
-                    people["owed"] =+ newPrice/group.lens()
+                    people["owed"] += newPrice/len(data["receipts"][id]["items"][itemID]["people"])
                     break
-    data["receipts"][id]["total"] =- oldPrice
+    data["receipts"][id]["total"] -= oldPrice
     if changing :
-        data["receipts"][id]["total"] =+ newPrice
+        data["receipts"][id]["total"] += newPrice
 
-def redistribution(person, id, itemID, data):
-    group =  data["receipts"][id]["items"][itemID]["people"][:]
+def redistribution(person, id, itemID, data):#works
     price = data["receipts"][id]["items"][itemID]["price"]
     for people in data["receipts"][id]["group"]:
-        for peopleR in group:
+        for peopleR in data["receipts"][id]["items"][itemID]["people"]:
             if people["name"] == peopleR:
-                people["owed"] =- price/group.lens()
+                people["owed"] -= price/len(data["receipts"][id]["items"][itemID]["people"])
                 break
-    if person in group:
-        group.remove(person)
+    if person in data["receipts"][id]["items"][itemID]["people"]:
+        data["receipts"][id]["items"][itemID]["people"].remove(person)
     else: 
-        group.append()
+        data["receipts"][id]["items"][itemID]["people"].append(person)
     for people in data["receipts"][id]["group"]:
-        for peopleR in group:
+        for peopleR in data["receipts"][id]["items"][itemID]["people"]:
             if people["name"] == peopleR:
-                people["owed"] =+ price/group.lens()
+                people["owed"] += price/len(data["receipts"][id]["items"][itemID]["people"])
                 break
 
 # add receipt(done)
@@ -132,3 +137,13 @@ def redistribution(person, id, itemID, data):
 # remove receipt(would also update the ID if necessary)(done)
 # remove and add person from item(would need to redistribute;' the amount owed if people already in the item)(done)
 # redistribution(done)
+
+# addReceipt()
+# addPerson("Dave", 2)
+# addItem() works
+# addPersonItem("Travis", 0, 2)
+# removePersonItem("Dave", 0, 1)
+# removeReceipt(1)
+# changeItem(0, 2, "Dinner", 60)
+# removeItem(0, 0)
+# removePerson("Anthony", 0)
