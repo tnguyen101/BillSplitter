@@ -91,6 +91,39 @@
     tr:hover {
         background-color: #e4e4e4;
     }
+
+    .dropdown {
+        background-color: #f9f9f9;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .dropdown ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .dropdown li {
+        padding: 5px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    button {
+        margin-left: 10px;
+        padding: 5px 10px;
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
     </style>
 </head>
 <body>
@@ -133,11 +166,24 @@
               </tr>
           </thead>
           <tbody id="tableBody">
-              <!-- Rows will be added here dynamically -->
-              <tr><td>Sushi Dinner</td><td>$80.00</td><td>Travis</td></tr>
+              <tr>
+                  <td onclick="this.querySelector('.dropdown').classList.toggle('show');">
+                      Sushi Dinner <button>Show Details</button>
+                      <div class='dropdown' style='display:none;'>
+                          <ul>
+                              <li>California Roll - $10.00</li>
+                              <li>Tuna Sashimi - $15.00</li>
+                              <li>Salmon Nigiri - $12.00</li>
+                              <li>Tempura Uramaki - $11.00</li>
+                              <li>Spicy Tuna Bowl - $20.00</li>
+                          </ul>
+                      </div>
+                  </td>
+                  <td>$80.00</td>
+                  <td>Travis</td>
+              </tr>
               <tr><td>Uber</td><td>$45.50</td><td>Anthony</td></tr>
               <tr><td>Museum Tickets</td><td>$75.25</td><td>Nyan</td></tr>
-              <!-- Add more expenses as needed -->
           </tbody>
       </table>
     </div>
@@ -147,12 +193,10 @@
           { name: 'Travis', amount: 80.00 },
           { name: 'Anthony', amount: 45.50 },
           { name: 'Nyan', amount: 75.25 },
-          // Add more people as needed
       ];
 
       const totalAmount = expenses.reduce((sum, expense) => sum + expense.amount, 0);
 
-      // Populate summary table
       const summaryTableBody = document.getElementById('summaryTableBody');
       const totalAmountElement = document.getElementById('totalAmount');
 
@@ -164,7 +208,6 @@
 
       totalAmountElement.textContent = totalAmount.toFixed(2);
 
-      // Create pie chart
       const ctx = document.getElementById('pieChart').getContext('2d');
       new Chart(ctx, {
           type:'pie',
@@ -174,7 +217,7 @@
                   data:expenses.map(expense=>expense.amount),
                   backgroundColor:[
                       '#FF6384','#36A2EB','#FFCE56','#4BC0C0','#9966FF','#FF9F40',
-                      '#FF6384','#36A2EB','#FFCE56' // Add more colors if needed
+                      '#FF6384','#36A2EB','#FFCE56'
                   ]
               }]
           },
@@ -195,20 +238,12 @@
           }
       });
       
-      // Populate expense table (if needed)
-      const tableBody = document.getElementById('tableBody');
-      
-      // Add fictional expenses here if you want to populate dynamically
-      // Example:
-      // expenses.forEach(expense => {
-      //     const row = document.createElement('tr');
-      //     row.innerHTML = `
-      //         <td>Fictional Expense Name</td> 
-      //         <td>$${expense.amount.toFixed(2)}</td> 
-      //         <td>${expense.name}</td>`;
-      //     tableBody.appendChild(row);
-      // });
-      
+      document.querySelectorAll('.dropdown').forEach(function(dropdown) {
+          dropdown.previousElementSibling.addEventListener('click', function() {
+              const display = dropdown.style.display;
+              dropdown.style.display = display === 'none' ? 'block' : 'none';
+          });
+      });
     </script>
 
 </body>
