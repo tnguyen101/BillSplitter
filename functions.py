@@ -1,5 +1,12 @@
 import json
 
+def itemizeReceipt(id):
+    with open('receipt_data.json', 'r+') as file:
+        data = json.load(file)
+        data["receipts"][id]["itemized"] = not data["receipts"][id]["itemized"]
+        file.seek(0)
+        json.dump(data, file, indent = 4)
+
 def addPerson(person, id):# works
     x = {"name" : person,
         "owed" : 0
@@ -28,16 +35,36 @@ def addItem(id, name, price, people):# works
         file.seek(0)
         json.dump(data, file, indent = 4)
 
-def addReceipt():#works
+def addReceipt(name, price, people, itemized):#works
     with open('receipt_data.json', 'r+') as file:
         data = json.load(file)
+        tempList = []
+        for p in people:
+            tempList.append({"name" : p,
+                             "owed" : 0
+                             })
         x = {
+            "name" : name,
+            "itemized" : itemized,
             "id" : len(data["receipts"]),
             "items" : [],
-            "group" : [],
+            "group" : tempList,
             "total" : 0
             }
         data["receipts"].append(x)
+        if not itemized:
+            y = {"itemID" : len(data["receipts"][x["id"]]["items"]),
+                "name" : name,
+                "price" : price,
+                "people" : people
+                }
+            data["receipts"][x["id"]]["items"].append(y)
+            data["receipts"][x["id"]]["total"] += price
+            for group in data["receipts"][x["id"]]["group"]:
+                for peopleR in people:
+                    if group["name"] == peopleR:
+                        group["owed"] += price/len(data["receipts"][x["id"]]["items"][y["itemID"]]["people"])
+                        break
         file.seek(0)
         json.dump(data, file, indent = 4)
 
@@ -132,7 +159,7 @@ def redistribution(person, id, itemID, data):#works
                 people["owed"] += price/len(data["receipts"][id]["items"][itemID]["people"])
                 break
 
-# add receipt(done)
+# addReceipt("Sushi dinner", 0, ["Anthony", "Travis", "Nyan"], True)
 # remove person(done)
 # remove receipt(would also update the ID if necessary)(done)
 # remove and add person from item(would need to redistribute;' the amount owed if people already in the item)(done)

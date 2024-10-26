@@ -1,6 +1,8 @@
 {
     "receipts": [
         {
+            "name": "",
+            "itemized": true,
             "id": 0,
             "items": [
                 {
@@ -50,35 +52,56 @@
             "total": 110
         },
         {
+            "name": "Sushi dinner",
+            "itemized": false,
             "id": 1,
-            "items": [],
-            "group": [
+            "items": [
                 {
-                    "name": "Travis",
-                    "owed": "0"
+                    "itemID": 0,
+                    "name": "Sushi dinner",
+                    "price": 50,
+                    "people": [
+                        "Anthony",
+                        "Travis",
+                        "Nyan"
+                    ]
                 }
             ],
-            "total": 0
+            "group": [
+                {
+                    "name": "Anthony",
+                    "owed": 16.666666666666668
+                },
+                {
+                    "name": "Travis",
+                    "owed": 16.666666666666668
+                },
+                {
+                    "name": "Nyan",
+                    "owed": 16.666666666666668
+                }
+            ],
+            "total": 50
         },
         {
+            "name": "Sushi dinner",
+            "itemized": true,
             "id": 2,
             "items": [],
             "group": [
                 {
-                    "name": "Dave",
+                    "name": "Anthony",
                     "owed": 0
                 },
                 {
                     "name": "Travis",
                     "owed": 0
+                },
+                {
+                    "name": "Nyan",
+                    "owed": 0
                 }
             ],
-            "total": 0
-        },
-        {
-            "id": 3,
-            "items": [],
-            "group": [],
             "total": 0
         }
     ]
