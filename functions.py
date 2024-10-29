@@ -107,7 +107,7 @@ def removePerson(person, id):# works
     with open("receipt_data.json", 'w') as file:
         json.dump(data, file, indent = 4)
 
-def removerPersonList(person):# works
+def removePersonList(person):# works
     with open('receipt_data.json', 'r') as file:
         data = json.load(file)
         data["peopleList"].remove(person)
@@ -192,7 +192,7 @@ def redistribution(person, id, itemID, data):# works
 # redistribution(done)
 
 # addPersonList("John")
-# removerPersonList("John")
+# removePersonList("John")
 # itemizeReceipt(0)
 # addReceipt()
 # addPerson("Dave", 2)
