@@ -2,7 +2,7 @@
     "receipts": [
         {
             "name": "",
-            "itemized": true,
+            "itemized": false,
             "id": 0,
             "items": [
                 {
@@ -104,5 +104,8 @@
             ],
             "total": 0
         }
+    ],
+    "peopleList": [
+        ""
     ]
 }
