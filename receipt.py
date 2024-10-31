@@ -1,5 +1,6 @@
 import copy
 import os
+import json
 from datetime import datetime
 
 class Item:
@@ -34,9 +35,8 @@ class Item:
 class Receipt:
 #------------------------------BASIC FUNCTIONS----------------------------------------
     #Constructor: empty list of items
-    def __init__(self, name = None, date = None):
+    def __init__(self, name = None):
         self.name = name
-        self.date = date
         self.items = []
         self.filename = None
         self.filetime = None
@@ -56,7 +56,6 @@ class Receipt:
     def printf(self):
         #print Receipt info
         items_formated = self.get_string_output_data()
-        print(f'\n{self.name} {self.date.strftime("%m/%d/%Y")} {self.filetime.strftime("%Y_%m_%d_%H_%M_%S")}\n')
         for item in items_formated:
             print(f'{item[0]:^13} {item[1]:^6} {"".join([f"{person:^8}" for person in item[2:]])}')
         people_dict = self.get_summary()
@@ -76,12 +75,9 @@ class Receipt:
             print(f'Total amount from receipt: {total:.2f}')
             print(f'Total amount from adding dictionalry {d_total:.2f}\nThe offset is: {total-d_total:.2f}')
 #------------------------------DATA OUTPUT----------------------------------------
- 
-    def get_header_info(self):
-        return (self.date, self.name, self.gettotal(), self.filetime)
     
     #This RETURN function returns a dictionary summary of the receipt. The first parameter puts receipt info in the dictionary
-    def get_summary(self, header = False):
+    def get_summary(self, header = False): #TO EDIT
         items_formated = self.get_string_output_data()
         #cretes a dictionary with person and values
         people_dict = {}
@@ -119,7 +115,7 @@ class Receipt:
         return copy.deepcopy(formated_2d)          
     
     #This RETURN function returns the receipt data into a 2d output string list : [line[string list[]]
-    def get_string_output_data(self):
+    def get_string_output_data(self):# to edit later
         data = self.get_obj_data()
         #format people in item
         formated_2d = []
@@ -141,18 +137,8 @@ class Receipt:
          
     #This function writes the receipt summary
     def write_to_file_summary(self, file_name):
-        pass#WRITE TO JSON FILE
-                    
-    #This function RETURNS the current time when called and saves.
-    def get_date_time(self):
-        if self.filetime == None:
-            self.filetime = datetime.now().replace(microsecond=0)
-            self.filename = f'{self.name}-{self.filetime.strftime("%Y_%m_%d_%H_%M_%S")}.txt'
-        return self.filetime
+        pass#WRITE TO JSON FILE   
     
-    def get_file_name(self):
-        self.get_date_time()
-        return self.filename
 #------------------------------DATA INPUT----------------------------------------
     def scan_list_data(self, data):
         name_date = data[1][0].split(':')
@@ -177,15 +163,13 @@ class Receipt:
 
                 
     #This function reads data from a txt file in a given location into the object
-    def read_from_file(self, file_name):
+    def read_from_file(self, filename):
         raw_data = []
-        with open(file_name, 'r') as file:
-            for line in file:   
-                if line.strip() == "":
-                    #the line is empty
-                    pass
-                else:
-                    line = line.strip()
-                    line = line.split('\31')
-                    raw_data.append(line)
-        self.scan_list_data(raw_data)
+        with open(filename, 'r') as file:
+            data = json.load(file)
+        #self.scan_list_data(raw_data)
+        
+        print(data["receipts"][0]["group"])
+        
+
+Receipt().read_from_file("receipt_data.json")

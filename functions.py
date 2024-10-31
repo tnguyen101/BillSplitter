@@ -16,8 +16,8 @@ def itemizeReceipt(id): # works
                         if people["name"] == peopleR:
                             people["owed"] += item["price"]/len(item["people"])
                             break
-        with open('receipt_data.json', 'w') as file:
-            json.dump(data, file, indent = 4)
+    with open('receipt_data.json', 'w') as file:
+        json.dump(data, file, indent = 4)
 
 def addPersonList(person):# works
     with open('receipt_data.json', 'r+') as file:
