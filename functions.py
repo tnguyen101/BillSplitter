@@ -1,5 +1,21 @@
 import json
 
+class Receipt:
+#------------------------------BASIC FUNCTIONS----------------------------------------
+    #Constructor: empty list of items
+    def __init__(self, name = None, itemsData = [], itemized = False, id = -1):
+        self.name = name
+        self.itemized = False
+        self.receipt_id = id
+        self.items = itemsData
+    
+    #This function adds an item to the receipt
+    def add(self,item):
+        self.items.append(item) 
+
+    
+#---------------------END OF CLASS-----------------------------------------------------
+
 def itemizeReceipt(id): # works
     with open('receipt_data.json', 'r') as file:
         data = json.load(file)
