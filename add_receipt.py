@@ -22,20 +22,33 @@ def addItem(id, name, price, people):# works
 def addReceipt(name, price, people, itemized):#works
     with open('receipt_data2.json', 'r+') as file:
         data = json.load(file)
+        tempList = [x.strip() for x in people.split(',')]
+        secTempList = []
+        for t in tempList:
+            secTempList.append({"name" : t,
+                                "owed" : 0
+                                })
         x = {
             "name" : name,
             "itemized" : itemized,
             "id" : len(data["receipts"]),
             "items" : [],
+            "group" : secTempList,
             "total" : price
             }
         data["receipts"].append(x)
-        y = {"itemID" : len(data["receipts"][x["id"]]["items"]),
-            "name" : name,
-            "price" : price,
-            "people" : people
-            }
-        data["receipts"][x["id"]]["items"].append(y)
+        if not itemized:
+            y = {"itemID" : len(data["receipts"][x["id"]]["items"]),
+                "name" : name,
+                "price" : price,
+                "people" : tempList
+                }
+            data["receipts"][x["id"]]["items"].append(y)
+            for group in data["receipts"][x["id"]]["group"]:
+                for peopleR in tempList:
+                    if group["name"] == peopleR:
+                        group["owed"] += price/len(data["receipts"][x["id"]]["items"][y["itemID"]]["people"])
+                        break
         file.seek(0)
         json.dump(data, file, indent = 4)
 

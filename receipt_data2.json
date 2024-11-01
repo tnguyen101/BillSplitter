@@ -29,32 +29,36 @@
             "total": 123.0
         },
         {
-            "name": "Pappa Johns",
+            "name": "sushi",
             "itemized": false,
             "id": 2,
             "items": [
                 {
                     "itemID": 0,
-                    "name": "Pappa Johns",
-                    "price": 20.0,
-                    "people": "Nyan,Travis"
+                    "name": "sushi",
+                    "price": 30.0,
+                    "people": [
+                        "Nyan",
+                        "Travis",
+                        "Anthony"
+                    ]
                 }
             ],
-            "total": 20.0
-        },
-        {
-            "name": "mama jones",
-            "itemized": false,
-            "id": 3,
-            "items": [
+            "group": [
                 {
-                    "itemID": 0,
-                    "name": "mama jones",
-                    "price": 20.0,
-                    "people": "Nyan,Travis,Bob"
+                    "name": "Nyan",
+                    "owed": 10.0
+                },
+                {
+                    "name": "Travis",
+                    "owed": 10.0
+                },
+                {
+                    "name": "Anthony",
+                    "owed": 10.0
                 }
             ],
-            "total": 20.0
+            "total": 30.0
         }
     ]
 }
