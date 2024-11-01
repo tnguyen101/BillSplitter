@@ -27,6 +27,34 @@
                 }
             ],
             "total": 123.0
+        },
+        {
+            "name": "Pappa Johns",
+            "itemized": false,
+            "id": 2,
+            "items": [
+                {
+                    "itemID": 0,
+                    "name": "Pappa Johns",
+                    "price": 20.0,
+                    "people": "Nyan,Travis"
+                }
+            ],
+            "total": 20.0
+        },
+        {
+            "name": "mama jones",
+            "itemized": false,
+            "id": 3,
+            "items": [
+                {
+                    "itemID": 0,
+                    "name": "mama jones",
+                    "price": 20.0,
+                    "people": "Nyan,Travis,Bob"
+                }
+            ],
+            "total": 20.0
         }
     ]
 }
