@@ -124,24 +124,17 @@
     </nav>
 
     <h2>Add New Expense</h2>
-    <form id="expenseForm">
+    <form id="expenseForm" method="POST" action="/add_receipt">
         <label for="name">Name:</label><br>
         <input type="text" id="name" name="name" required><br>
 
         <label for="price">Price:</label><br>
         <input type="number" id="price" name="price" step="0.01" required><br>
+        
+        <label for="people">People (Comma separated):</label><br>
+        <input type="text" id="people" name="people" required><br>
 
-        <label>People:</label><br>
-        <input type="checkbox" id="dave" name="people" value="Dave">
-        <label for="dave">Dave</label><br>
-        <input type="checkbox" id="tim" name="people" value="Tim">
-        <label for="tim">Tim</label><br>
-        <input type="checkbox" id="andrew" name="people" value="Andrew">
-        <label for="andrew">Andrew</label><br>
-        <input type="checkbox" id="jerry" name="people" value="Jerry">
-        <label for="jerry">Jerry</label><br><br>
-
-        <input type="submit" value="Submit">
+        <button type="submit">Submit</button>
     </form>
 
     <h2>Existing Expenses</h2>
@@ -149,30 +142,78 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Amount</th>
-                <th>People</th>
+                <th>Itemized</th>
+                <th>ID</th>
+                <th>Total</th>
             </tr>
         </thead>
-        <tbody id="tableBody">
+        <tbody id="r_tableBody">
             <!-- Rows will be added here dynamically -->
         </tbody>
     </table>
     <script>
-        fetch('/data.json')
-        .then(response => response.json())
-        .then(data => {
-            const tableBody = document.getElementById('tableBody');
-            data.forEach(expense => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${expense.name}</td>
-                    <td>${expense.amount}</td>
-                    <td>${expense.people}</td>
-                `;
-                tableBody.appendChild(row);
-            });
-        })
-        .catch(error => console.error('Error fetching data:', error));
+        // Fetch existing data and populate the table
+        function loadExpenses() {
+            fetch('/receipt_data2.json')
+            .then(response => response.json())
+            .then(data => {
+                const r_tableBody = document.getElementById('r_tableBody');
+                r_tableBody.innerHTML = ''; // Clear existing rows
+
+                data.receipts.forEach(expense => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${expense.name}</td>
+                        <td>${expense.itemized ? "Yes" : "No"}</td>
+                        <td>${expense.id}</td>
+                        <td>$${expense.total.toFixed(2)}</td>
+                    `;
+                    r_tableBody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        }
+
+        // Handle form submission
+        document.getElementById('expenseForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Gather form data
+            const name = document.getElementById('name').value;
+            const price = parseFloat(document.getElementById('price').value);
+            const people = document.getElementById('people').value.split(',').map(person => person.trim());
+            
+            // Here you might want to send the data to the server (not shown)
+            
+            // For example, using fetch to send a POST request
+            fetch('/add_receipt', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    price: price,
+                    people: people,
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json(); // Assuming the server returns updated data
+            })
+            .then(data => {
+                // Optionally update the table with the new receipt
+                loadExpenses(); // Reload the table with updated data
+                // Clear form fields
+                document.getElementById('expenseForm').reset();
+            })
+            .catch(error => console.error('Error adding receipt:', error));
+        });
+
+        // Load expenses when the page loads
+        window.onload = loadExpenses;
     </script>
 </body>
 </html>

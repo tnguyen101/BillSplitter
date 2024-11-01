@@ -33,6 +33,18 @@
                         "Dave",
                         "Travis"
                     ]
+                },
+                {
+                    "itemID": 3,
+                    "name": "pizza",
+                    "price": 123.0,
+                    "people": "Mon Mon, Harris"
+                },
+                {
+                    "itemID": 4,
+                    "name": "pizza",
+                    "price": 123.0,
+                    "people": "Harris, Anthony, Travis"
                 }
             ],
             "group": [
@@ -49,7 +61,7 @@
                     "owed": 30.0
                 }
             ],
-            "total": 110
+            "total": 356.0
         },
         {
             "name": "Sushi dinner",

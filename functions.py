@@ -7,11 +7,18 @@ class Receipt:
         self.name = name
         self.itemized = False
         self.receipt_id = id
-        self.items = itemsData
+        self.items = itemsData #Items data[4]: ItemID(int), item_name(str), item_price(double), people(str[])
+
+    #Adds a receipt using 
+    def addreceipt(self, data):  
+        pass
     
     #This function adds an item to the receipt
-    def add(self,item):
+    def additem(self,item):
         self.items.append(item) 
+    
+    
+    
 
     
 #---------------------END OF CLASS-----------------------------------------------------

@@ -1,0 +1,32 @@
+{
+    "receipts": [
+        {
+            "name": "Nyan Lin Htet",
+            "itemized": false,
+            "id": 0,
+            "items": [
+                {
+                    "itemID": 0,
+                    "name": "Nyan Lin Htet",
+                    "price": 123.0,
+                    "people": "Travis,Nyan"
+                }
+            ],
+            "total": 123.0
+        },
+        {
+            "name": "pizza",
+            "itemized": false,
+            "id": 1,
+            "items": [
+                {
+                    "itemID": 0,
+                    "name": "pizza",
+                    "price": 123.0,
+                    "people": "Travis,Nyan"
+                }
+            ],
+            "total": 123.0
+        }
+    ]
+}
