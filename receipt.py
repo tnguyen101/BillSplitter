@@ -141,19 +141,7 @@ class Receipt:
          
     #This function writes the receipt summary
     def write_to_file_summary(self, file_name):
-        summary = self.get_summary(True)
-        size = len(summary)
-        count = 0
-        directory = os.path.dirname(file_name)
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-        with open(file_name, 'a') as file:
-            for key,value in summary.items():
-                count+=1
-                if count < size:
-                    file.write(str(key) + ':' + str(value) + '\31')
-                else:
-                    file.write(str(key) + ':' + str(value) + '\n')
+        pass#WRITE TO JSON FILE
                     
     #This function RETURNS the current time when called and saves.
     def get_date_time(self):
@@ -165,29 +153,6 @@ class Receipt:
     def get_file_name(self):
         self.get_date_time()
         return self.filename
-    
-    #This function writes the receipt output string into a txt file to a location
-    def write_to_file(self, file_destination):
-        file_directory = file_destination.split('/')
-        file_directory = "/".join(file_directory[:-1])
-        #check if directory is there
-        if not os.path.exists(file_directory):
-            #no directory, so create directory
-            os.makedirs(file_directory)
-        #start writing to directory
-        with open(file_destination, 'w') as file:
-            file.write(self.filename+'\n')
-        self.write_to_file_summary(file_destination)
-        data = self.get_obj_data()
-        delim = '\31'
-        with open(file_destination, 'a') as file:
-            for line in data:
-                for cell in range(len(line)):
-                    if cell == (len(line)-1):
-                        file.write(str(line[cell]))
-                    else:
-                        file.write(str(line[cell])+delim)
-                file.write('\n')
 #------------------------------DATA INPUT----------------------------------------
     def scan_list_data(self, data):
         name_date = data[1][0].split(':')
