@@ -59,6 +59,87 @@
                 }
             ],
             "total": 30.0
+        },
+        {
+            "name": "Pizza restaurant",
+            "itemized": true,
+            "id": 3,
+            "items": [
+                {
+                    "itemID": 0,
+                    "name": "Pepperoni",
+                    "price": 24,
+                    "people": [
+                        "Travis",
+                        "Nyan"
+                    ]
+                },
+                {
+                    "itemID": 1,
+                    "name": "Cheese",
+                    "price": 18,
+                    "people": [
+                        "Nyan"
+                    ]
+                }
+            ],
+            "group": [
+                {
+                    "name": "Nyan",
+                    "owed": 30.0
+                },
+                {
+                    "name": "Travis",
+                    "owed": 12.0
+                }
+            ],
+            "total": 42
+        },
+        {
+            "name": "Sushi restaurant",
+            "itemized": true,
+            "id": 4,
+            "items": [
+                {
+                    "itemID": 0,
+                    "name": "Salmond",
+                    "price": 10,
+                    "people": [
+                        "Anthony"
+                    ]
+                },
+                {
+                    "itemID": 1,
+                    "name": "Tuna",
+                    "price": 10,
+                    "people": [
+                        "Nyan"
+                    ]
+                },
+                {
+                    "itemID": 2,
+                    "name": "Rolls",
+                    "price": 10,
+                    "people": [
+                        "Travis"
+                    ]
+                }
+            ],
+            "group": [
+                {
+                    "name": "Nyan",
+                    "owed": 10.0
+                },
+                {
+                    "name": "Travis",
+                    "owed": 10.0
+                },
+                {
+                    "name": "Anthony",
+                    "owed": 10.0
+                }
+            ],
+            "total": 30
         }
     ]
 }

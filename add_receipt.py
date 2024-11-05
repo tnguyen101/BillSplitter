@@ -1,26 +1,26 @@
 import sys
 import json
 
-def addItem(id, name, price, people):# works
-    with open('receipt_data2.json', 'r+') as file:
-        data = json.load(file)
-        x = {"itemID" : len(data["receipts"][id]["items"]),
-            "name" : name,
-            "price" : price,
-            "people" : people
-            }
-        data["receipts"][id]["items"].append(x)
-        data["receipts"][id]["total"] += price
-        for group in data["receipts"][id]["group"]:
-            for peopleR in people:
-                if group["name"] == peopleR:
-                    group["owed"] += price/len(data["receipts"][id]["items"][x["itemID"]]["people"])
-                    break
-        file.seek(0)
-        json.dump(data, file, indent = 4)
+def addItem(id, name, price, people, data):# works
+    tempList = [x.strip() for x in people.split(',')]
+    secTempList = []
+    for t in tempList:
+        secTempList.append(t)
+    x = {"itemID" : len(data["receipts"][id]["items"]),
+        "name" : name,
+        "price" : price,
+        "people" : secTempList
+        }
+    data["receipts"][id]["items"].append(x)
+    data["receipts"][id]["total"] += price
+    for group in data["receipts"][id]["group"]:
+        for peopleR in secTempList:
+            if group["name"] == peopleR:
+                group["owed"] += price/len(data["receipts"][id]["items"][x["itemID"]]["people"])
+                break
 
-def addReceipt(name, price, people, itemized):#works
-    with open('receipt_data2.json', 'r+') as file:
+def addReceipt(name, price, people, itemized, itemData):#works
+    with open('receipt_data2.json', 'r') as file:
         data = json.load(file)
         tempList = [x.strip() for x in people.split(',')]
         secTempList = []
@@ -28,32 +28,41 @@ def addReceipt(name, price, people, itemized):#works
             secTempList.append({"name" : t,
                                 "owed" : 0
                                 })
+        tempBool = False
+        if itemized == "true":
+            tempBool = True
         x = {
             "name" : name,
-            "itemized" : itemized,
+            "itemized" : tempBool,
             "id" : len(data["receipts"]),
             "items" : [],
             "group" : secTempList,
-            "total" : price
+            "total" : 0
             }
         data["receipts"].append(x)
-        if not itemized:
+        if not tempBool:
             y = {"itemID" : len(data["receipts"][x["id"]]["items"]),
                 "name" : name,
                 "price" : price,
                 "people" : tempList
                 }
             data["receipts"][x["id"]]["items"].append(y)
+            data["receipts"][x["id"]]["total"] += price
             for group in data["receipts"][x["id"]]["group"]:
                 for peopleR in tempList:
                     if group["name"] == peopleR:
                         group["owed"] += price/len(data["receipts"][x["id"]]["items"][y["itemID"]]["people"])
                         break
-        file.seek(0)
-        json.dump(data, file, indent = 4)
+        else:
+            for item in json.loads(itemData):
+                addItem(x["id"], item["name"], item["price"], item["person"], data)
+    with open('receipt_data2.json', 'w') as file:
+        json.dump(data, file, indent = 4)        
 
 if __name__ == "__main__":
     r_name = sys.argv[1]
     r_price = sys.argv[2]
     r_people = sys.argv[3]
-    addReceipt(r_name, float(r_price), r_people, False)#works till here
+    r_itemized = sys.argv[4]
+    r_items = sys.argv[5]
+    addReceipt(r_name, float(r_price), r_people, r_itemized, r_items)#works till here

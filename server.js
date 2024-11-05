@@ -36,9 +36,10 @@ app.post('/add_receipt', (req, res) => {
   const name = req.body.name;
   const price = req.body.price;
   const people = req.body.people;
-
+  const itemized = req.body.itemized;
+  const items = req.body.items;
   // Call the Python script
-  const pythonProcess = spawn('python', ['add_receipt.py', name, price, people]);
+  const pythonProcess = spawn('python', ['add_receipt.py', name, price, people, itemized, JSON.stringify(items)]);
 
   // Handle standard output
   pythonProcess.stdout.on('data', (data) => {
