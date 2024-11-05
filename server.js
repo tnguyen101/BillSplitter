@@ -63,6 +63,16 @@ app.post('/add_receipt', (req, res) => {
   });
 });
 
+app.post('/edit_receipt', (req, res) => {
+  // the values are placeholders
+  const id = 0;
+  const action = 0;
+});
+
+app.post('/get_summary.py', (req, res) => {
+  // not sure on what variables are needed
+});
+
 // Start the server
 const port = 3000;
 app.listen(port, () => {
