@@ -63,55 +63,74 @@
             border-radius: 4px;
         }
 
-        input[type="submit"] {
-            background-color: #007BFF;
-            color: white;
-            padding: 10px 15px;
+        button {
+            padding: 8px 16px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
         }
 
-        input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-
-        table {
-            font-family: 'Arial', sans-serif;
-            border-collapse: separate;
-            border-spacing: 0;
-            width: 100%;
-            margin-top: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        
-        td, th {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 12px;
-            font-size: 1.1em;
-        }
-        
-        th {
-            background-color: #007BFF;
+        button[type="submit"] {
+            background-color: #6c757d;
             color: white;
         }
 
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
+        #addItemButton {
+            background-color: #6c757d;
+            color: white;
         }
 
-        tr:hover {
-            background-color: #e4e4e4;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th {
+            background-color: #007BFF;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        td {
+            padding: 8px;
+            border: 1px solid #ddd;
         }
 
         .delete-button {
             color: red;
             cursor: pointer;
             font-weight: bold;
+            font-size: 20px;
+            display: flex;
+            justify-content: center;
         }
+
+        #itemizedSection {
+            margin-top: 20px;
+        }
+
+        #itemizedTable input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .checkbox-container {
+            margin: 15px 0;
+        }
+
+        /* Specific styles for itemized table */
+        #itemizedTable th:nth-child(1), #itemizedTable td:nth-child(1) { width: 30%; }
+        #itemizedTable th:nth-child(2), #itemizedTable td:nth-child(2) { width: 20%; }
+        #itemizedTable th:nth-child(3), #itemizedTable td:nth-child(3) { width: 40%; }
+        #itemizedTable th:nth-child(4), #itemizedTable td:nth-child(4) { width: 10%; }
     </style>
 </head>
 <body>
@@ -134,6 +153,27 @@
         <label for="people">People (Comma separated):</label><br>
         <input type="text" id="people" name="people" required><br>
 
+        <div class="checkbox-container">
+            <input type="checkbox" id="itemized" name="itemized" onchange="toggleItemizedSection()">
+            <label for="itemized">Itemized Expenses</label>
+        </div>
+
+        <div id="itemizedSection" style="display:none;">
+            <table id="itemizedTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Person</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <button type="button" id="addItemButton" onclick="addItemizedExpenseRow()">Add Item</button>
+        </div>
+
         <button type="submit">Submit</button>
     </form>
 
@@ -148,17 +188,37 @@
             </tr>
         </thead>
         <tbody id="r_tableBody">
-            <!-- Rows will be added here dynamically -->
         </tbody>
     </table>
+
     <script>
-        // Fetch existing data and populate the table
+        function toggleItemizedSection() {
+            const itemizedSection = document.getElementById('itemizedSection');
+            itemizedSection.style.display = document.getElementById('itemized').checked ? 'block' : 'none';
+        }
+
+        function addItemizedExpenseRow() {
+            const itemizedTable = document.getElementById('itemizedTable').getElementsByTagName('tbody')[0];
+            const row = itemizedTable.insertRow(-1);
+            row.innerHTML = `
+                <td><input type="text" name="itemName[]" required></td>
+                <td><input type="number" name="itemPrice[]" step="0.01" required></td>
+                <td><input type="text" name="itemPerson[]" required></td>
+                <td><span class="delete-button" onclick="deleteItemizedExpenseRow(this)">×</span></td>
+            `;
+        }
+
+        function deleteItemizedExpenseRow(button) {
+            const row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
+
         function loadExpenses() {
             fetch('/receipt_data2.json')
             .then(response => response.json())
             .then(data => {
                 const r_tableBody = document.getElementById('r_tableBody');
-                r_tableBody.innerHTML = ''; // Clear existing rows
+                r_tableBody.innerHTML = '';
 
                 data.receipts.forEach(expense => {
                     const row = document.createElement('tr');
@@ -174,18 +234,30 @@
             .catch(error => console.error('Error fetching data:', error));
         }
 
-        // Handle form submission
         document.getElementById('expenseForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent default form submission
+            event.preventDefault();
 
-            // Gather form data
             const name = document.getElementById('name').value;
             const price = parseFloat(document.getElementById('price').value);
             const people = document.getElementById('people').value.split(',').map(person => person.trim());
             
-            // Here you might want to send the data to the server (not shown)
+            const isItemized = document.getElementById('itemized').checked;
+            let itemizedData = [];
             
-            // For example, using fetch to send a POST request
+            if (isItemized) {
+                const itemNames = document.getElementsByName('itemName[]');
+                const itemPrices = document.getElementsByName('itemPrice[]');
+                const itemPeople = document.getElementsByName('itemPerson[]');
+                
+                for (let i = 0; i < itemNames.length; i++) {
+                    itemizedData.push({
+                        name: itemNames[i].value,
+                        price: parseFloat(itemPrices[i].value),
+                        person: itemPeople[i].value
+                    });
+                }
+            }
+
             fetch('/add_receipt', {
                 method: 'POST',
                 headers: {
@@ -195,24 +267,24 @@
                     name: name,
                     price: price,
                     people: people,
+                    itemized: isItemized,
+                    items: itemizedData
                 })
             })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                return response.json(); // Assuming the server returns updated data
+                return response.json();
             })
             .then(data => {
-                // Optionally update the table with the new receipt
-                loadExpenses(); // Reload the table with updated data
-                // Clear form fields
+                loadExpenses();
                 document.getElementById('expenseForm').reset();
+                document.getElementById('itemizedSection').style.display = 'none';
             })
             .catch(error => console.error('Error adding receipt:', error));
         });
 
-        // Load expenses when the page loads
         window.onload = loadExpenses;
     </script>
 </body>
