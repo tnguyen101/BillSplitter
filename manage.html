@@ -188,6 +188,20 @@
             </tr>
         </thead>
         <tbody id="r_tableBody">
+            <tr>
+                <td onclick="this.querySelector('.dropdown').classList.toggle('show');">
+                    Sushi Dinner <button>Show Details</button>
+                    <div class='dropdown' style='display:none;'>
+                        <ul>
+                            <li>California Roll - $10.00</li>
+                            <li>Tuna Sashimi - $15.00</li>
+                            <li>Salmon Nigiri - $12.00</li>
+                            <li>Tempura Uramaki - $11.00</li>
+                            <li>Spicy Tuna Bowl - $20.00</li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
         </tbody>
     </table>
 
@@ -219,16 +233,35 @@
             .then(data => {
                 const r_tableBody = document.getElementById('r_tableBody');
                 r_tableBody.innerHTML = '';
-
                 data.receipts.forEach(expense => {
                     const row = document.createElement('tr');
-                    row.innerHTML = `
+                    const header_row = document.createElement('tr');
+                    header_row.innerHTML = `
                         <td>${expense.name}</td>
                         <td>${expense.itemized ? "Yes" : "No"}</td>
                         <td>${expense.id}</td>
                         <td>$${expense.total.toFixed(2)}</td>
                     `;
-                    r_tableBody.appendChild(row);
+                     /*receipt is NOT ITEMIZED*/    
+                    if(!expense.itemized){
+                        r_tableBody.appendChild(header_row);
+                    }
+
+                    /*receipt is ITEMIZED*/
+                    else{
+                        const itemList = document.createElement('ul');
+                        expense.items.forEach(item => {
+                            const listItem = document.createElement('li');
+                            listItem.innerText = `${item.name}: $${item.price.toFixed(2)}`;
+                            itemList.appendChild(listItem);
+                        });
+
+                        const itemCell = document.createElement('td');
+                        itemCell.appendChild(itemList);
+                        r_tableBody.appendChild(header_row);
+                        row.appendChild(itemCell);
+                        r_tableBody.appendChild(row);
+                    }
                 });
             })
             .catch(error => console.error('Error fetching data:', error));
@@ -283,6 +316,13 @@
                 document.getElementById('itemizedSection').style.display = 'none';
             })
             .catch(error => console.error('Error adding receipt:', error));
+        });
+
+        document.querySelectorAll('.dropdown').forEach(function(dropdown) {
+            dropdown.previousElementSibling.addEventListener('click', function() {
+                const display = dropdown.style.display;
+                dropdown.style.display = display === 'none' ? 'block' : 'none';
+            });
         });
 
         window.onload = loadExpenses;
