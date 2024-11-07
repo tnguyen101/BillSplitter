@@ -125,12 +125,6 @@
         .checkbox-container {
             margin: 15px 0;
         }
-
-        /* Specific styles for itemized table */
-        #itemizedTable th:nth-child(1), #itemizedTable td:nth-child(1) { width: 30%; }
-        #itemizedTable th:nth-child(2), #itemizedTable td:nth-child(2) { width: 20%; }
-        #itemizedTable th:nth-child(3), #itemizedTable td:nth-child(3) { width: 40%; }
-        #itemizedTable th:nth-child(4), #itemizedTable td:nth-child(4) { width: 10%; }
     </style>
 </head>
 <body>
@@ -181,27 +175,12 @@
     <table>
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Itemized</th>
                 <th>ID</th>
+                <th>Name</th>
                 <th>Total</th>
             </tr>
         </thead>
         <tbody id="r_tableBody">
-            <tr>
-                <td onclick="this.querySelector('.dropdown').classList.toggle('show');">
-                    Sushi Dinner <button>Show Details</button>
-                    <div class='dropdown' style='display:none;'>
-                        <ul>
-                            <li>California Roll - $10.00</li>
-                            <li>Tuna Sashimi - $15.00</li>
-                            <li>Salmon Nigiri - $12.00</li>
-                            <li>Tempura Uramaki - $11.00</li>
-                            <li>Spicy Tuna Bowl - $20.00</li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
         </tbody>
     </table>
 
@@ -232,40 +211,58 @@
             .then(response => response.json())
             .then(data => {
                 const r_tableBody = document.getElementById('r_tableBody');
-                r_tableBody.innerHTML = '';
-                data.receipts.forEach(expense => {
+                r_tableBody.innerHTML = ''; // Clear the table body
+        
+                data.receipts.forEach((expense, index) => {
                     const row = document.createElement('tr');
-                    const header_row = document.createElement('tr');
-                    header_row.innerHTML = `
-                        <td>${expense.name}</td>
-                        <td>${expense.itemized ? "Yes" : "No"}</td>
-                        <td>${expense.id}</td>
+        
+                    // Main row with basic information and toggle button for itemized receipts
+                    row.innerHTML = `
+                        <td style="
+                            padding: 0;
+                            margin: 0;
+                            line-height: 1; /* Minimize vertical space */
+                            width: 30px; /* Set a fixed width for the column */
+                            text-align: center; /* Optional: centers the text */
+                            ">${expense.id}
+                        </td>
+                        <td>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>${expense.name}</span>
+                                ${expense.itemized ? `<button onclick="toggleItems(${index})">Show Items</button>` : ""}
+                            </div>
+                            <div id="items-${index}" style="display: none; margin-top: 10px;">
+                                <table style="
+                                    width: 50%;
+                                    background-color: #e0e2e0;
+                                    border-collapse: collapse;
+                                    margin-left: auto;
+                                ">
+                                    ${expense.items.map(item => `
+                                        <tr>
+                                            <td>${item.name}</td>
+                                            <td style="text-align: middle;">$${item.price.toFixed(2)}</td>
+                                            <td>${item.people}</td>
+                                        </tr>
+                                    `).join('')}
+                                </table>
+                            </div>
+                        </td>
                         <td>$${expense.total.toFixed(2)}</td>
                     `;
-                     /*receipt is NOT ITEMIZED*/    
-                    if(!expense.itemized){
-                        r_tableBody.appendChild(header_row);
-                    }
-
-                    /*receipt is ITEMIZED*/
-                    else{
-                        const itemList = document.createElement('ul');
-                        expense.items.forEach(item => {
-                            const listItem = document.createElement('li');
-                            listItem.innerText = `${item.name}: $${item.price.toFixed(2)}`;
-                            itemList.appendChild(listItem);
-                        });
-
-                        const itemCell = document.createElement('td');
-                        itemCell.appendChild(itemList);
-                        r_tableBody.appendChild(header_row);
-                        row.appendChild(itemCell);
-                        r_tableBody.appendChild(row);
-                    }
+                    r_tableBody.appendChild(row);
                 });
             })
             .catch(error => console.error('Error fetching data:', error));
         }
+        
+        // Toggle visibility function
+        function toggleItems(index) {
+            const itemDiv = document.getElementById(`items-${index}`);
+            itemDiv.style.display = itemDiv.style.display === "none" ? "block" : "none";
+        }
+        
+        
 
         document.getElementById('expenseForm').addEventListener('submit', function(event) {
             event.preventDefault();
