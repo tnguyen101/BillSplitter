@@ -73,41 +73,9 @@
             "total": 14.99
         },
         {
-            "name": "Lunch",
-            "itemized": true,
-            "id": 2,
-            "items": [
-                {
-                    "itemID": 0,
-                    "name": "Fried rice",
-                    "price": 13.99,
-                    "people": [
-                        "Harris",
-                        "Travis"
-                    ]
-                },
-                {
-                    "itemID": 1,
-                    "name": "Ramen",
-                    "price": 12.99,
-                    "people": [
-                        "Jack",
-                        "Harris"
-                    ]
-                }
-            ],
-            "group": [
-                {
-                    "name": "Harris",
-                    "owed": 13.49
-                }
-            ],
-            "total": 26.98
-        },
-        {
             "name": "Mcdonalds",
             "itemized": true,
-            "id": 3,
+            "id": 2,
             "items": [
                 {
                     "itemID": 0,
@@ -138,6 +106,46 @@
                 },
                 {
                     "name": "Travis",
+                    "owed": 6.495
+                }
+            ],
+            "total": 26.98
+        },
+        {
+            "name": "Lunch",
+            "itemized": true,
+            "id": 3,
+            "items": [
+                {
+                    "itemID": 0,
+                    "name": "Fried rice",
+                    "price": 13.99,
+                    "people": [
+                        "Harris",
+                        "Travis"
+                    ]
+                },
+                {
+                    "itemID": 1,
+                    "name": "Ramen",
+                    "price": 12.99,
+                    "people": [
+                        "Jack",
+                        "Harris"
+                    ]
+                }
+            ],
+            "group": [
+                {
+                    "name": "Harris",
+                    "owed": 13.49
+                },
+                {
+                    "name": "Travis",
+                    "owed": 6.995
+                },
+                {
+                    "name": "Jack",
                     "owed": 6.495
                 }
             ],

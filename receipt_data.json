@@ -1,123 +1,155 @@
 {
     "receipts": [
         {
-            "name": "",
-            "itemized": false,
+            "name": "Dinner",
+            "itemized": true,
             "id": 0,
             "items": [
                 {
                     "itemID": 0,
-                    "name": "Salmond",
-                    "price": 20,
+                    "name": "Salmon",
+                    "price": 12.99,
                     "people": [
-                        "Anthony",
+                        "Harris",
                         "Travis"
                     ]
                 },
                 {
                     "itemID": 1,
-                    "name": "Movie",
-                    "price": 30,
+                    "name": "Nigiri",
+                    "price": 13.99,
                     "people": [
                         "Anthony",
-                        "Travis",
-                        "Dave"
+                        "Harris"
                     ]
-                },
-                {
-                    "itemID": 2,
-                    "name": "Dinner",
-                    "price": 60,
-                    "people": [
-                        "Anthony",
-                        "Dave",
-                        "Travis"
-                    ]
-                },
-                {
-                    "itemID": 3,
-                    "name": "pizza",
-                    "price": 123.0,
-                    "people": "Mon Mon, Harris"
-                },
-                {
-                    "itemID": 4,
-                    "name": "pizza",
-                    "price": 123.0,
-                    "people": "Harris, Anthony, Travis"
                 }
             ],
             "group": [
                 {
-                    "name": "Anthony",
-                    "owed": 40.0
+                    "name": "Harris",
+                    "owed": 13.49
                 },
                 {
                     "name": "Travis",
-                    "owed": 40.0
+                    "owed": 6.495
                 },
                 {
-                    "name": "Dave",
-                    "owed": 30.0
+                    "name": "Anthony",
+                    "owed": 6.995
                 }
             ],
-            "total": 356.0
+            "total": 26.98
         },
         {
-            "name": "Sushi dinner",
+            "name": "pizza",
             "itemized": false,
             "id": 1,
             "items": [
                 {
                     "itemID": 0,
-                    "name": "Sushi dinner",
-                    "price": 50,
+                    "name": "pizza",
+                    "price": 14.99,
                     "people": [
-                        "Anthony",
-                        "Travis",
-                        "Nyan"
+                        "Harris",
+                        "Phyo",
+                        "Jack"
+                    ]
+                }
+            ],
+            "group": [
+                {
+                    "name": "Harris",
+                    "owed": 4.996666666666667
+                },
+                {
+                    "name": "Phyo",
+                    "owed": 4.996666666666667
+                },
+                {
+                    "name": "Jack",
+                    "owed": 4.996666666666667
+                }
+            ],
+            "total": 14.99
+        },
+        {
+            "name": "Mcdonalds",
+            "itemized": true,
+            "id": 2,
+            "items": [
+                {
+                    "itemID": 0,
+                    "name": "Burger meal",
+                    "price": 13.99,
+                    "people": [
+                        "Harris"
+                    ]
+                },
+                {
+                    "itemID": 1,
+                    "name": "Coffee",
+                    "price": 12.99,
+                    "people": [
+                        "Harris",
+                        "Travis"
                     ]
                 }
             ],
             "group": [
                 {
                     "name": "Anthony",
-                    "owed": 16.666666666666668
+                    "owed": 0
+                },
+                {
+                    "name": "Harris",
+                    "owed": 20.485
                 },
                 {
                     "name": "Travis",
-                    "owed": 16.666666666666668
-                },
-                {
-                    "name": "Nyan",
-                    "owed": 16.666666666666668
+                    "owed": 6.495
                 }
             ],
-            "total": 50
+            "total": 26.98
         },
         {
-            "name": "Sushi dinner",
+            "name": "Lunch",
             "itemized": true,
-            "id": 2,
-            "items": [],
+            "id": 3,
+            "items": [
+                {
+                    "itemID": 0,
+                    "name": "Fried rice",
+                    "price": 13.99,
+                    "people": [
+                        "Harris",
+                        "Travis"
+                    ]
+                },
+                {
+                    "itemID": 1,
+                    "name": "Ramen",
+                    "price": 12.99,
+                    "people": [
+                        "Jack",
+                        "Harris"
+                    ]
+                }
+            ],
             "group": [
                 {
-                    "name": "Anthony",
-                    "owed": 0
+                    "name": "Harris",
+                    "owed": 13.49
                 },
                 {
                     "name": "Travis",
-                    "owed": 0
+                    "owed": 6.995
                 },
                 {
-                    "name": "Nyan",
-                    "owed": 0
+                    "name": "Jack",
+                    "owed": 6.495
                 }
             ],
-            "total": 0
+            "total": 26.98
         }
-    ],
-    "peopleList": [
-        ""
     ]
 }
