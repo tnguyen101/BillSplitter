@@ -141,12 +141,13 @@
         <label for="name">Name:</label><br>
         <input type="text" id="name" name="name" required><br>
 
-        <label for="price">Price:</label><br>
-        <input type="number" id="price" name="price" step="0.01" required><br>
-        
-        <label for="people">People (Comma separated):</label><br>
-        <input type="text" id="people" name="people" required><br>
-
+        <div id="unitemizedSection">
+            <label for="price">Price:</label><br>
+            <input type="number" id="price" name="price" step="0.01"><br>
+            
+            <label for="people">People (Comma separated):</label><br>
+            <input type="text" id="people" name="people"><br>
+        </div>
         <div class="checkbox-container">
             <input type="checkbox" id="itemized" name="itemized" onchange="toggleItemizedSection()">
             <label for="itemized">Itemized Expenses</label>
@@ -188,6 +189,7 @@
         function toggleItemizedSection() {
             const itemizedSection = document.getElementById('itemizedSection');
             itemizedSection.style.display = document.getElementById('itemized').checked ? 'block' : 'none';
+            unitemizedSection.style.display = document.getElementById('itemized').checked ? 'none' : 'block';
         }
 
         function addItemizedExpenseRow() {
@@ -268,9 +270,8 @@
             event.preventDefault();
 
             const name = document.getElementById('name').value;
-            const price = parseFloat(document.getElementById('price').value);
-            const people = document.getElementById('people').value.split(',').map(person => person.trim());
-            
+            let price = 0;
+            let people = "";
             const isItemized = document.getElementById('itemized').checked;
             let itemizedData = [];
             
@@ -286,6 +287,9 @@
                         person: itemPeople[i].value
                     });
                 }
+            } else {
+                price = parseFloat(document.getElementById('price').value);
+                people = document.getElementById('people').value.split(',').map(person => person.trim());
             }
 
             fetch('/add_receipt', {
