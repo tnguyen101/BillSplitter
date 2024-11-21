@@ -318,6 +318,49 @@
                 }
             ],
             "total": 42
+        },
+        {
+            "name": "test",
+            "itemized": true,
+            "id": 9,
+            "items": [
+                {
+                    "itemID": 0,
+                    "name": "Tuna",
+                    "price": 12,
+                    "people": [
+                        "Travis",
+                        "Nyan"
+                    ]
+                },
+                {
+                    "itemID": 1,
+                    "name": "Rolls",
+                    "price": 15,
+                    "people": [
+                        "Nyan"
+                    ]
+                },
+                {
+                    "itemID": 2,
+                    "name": "Salmond",
+                    "price": 15,
+                    "people": [
+                        "Travis"
+                    ]
+                }
+            ],
+            "group": [
+                {
+                    "name": "Travis",
+                    "owed": 21.0
+                },
+                {
+                    "name": "Nyan",
+                    "owed": 21.0
+                }
+            ],
+            "total": 42
         }
     ]
 }

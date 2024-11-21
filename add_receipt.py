@@ -23,14 +23,16 @@ def addReceipt(name, price, people, itemized, itemData):#works
     with open('receipt_data2.json', 'r') as file:
         data = json.load(file)
         itemData = json.loads(itemData)
+        tempList = []
         tempList = [x.strip() for x in people.split(',')]
         secTempList = []
         if itemized:
-            tempList.remove("")
             for Item in itemData:
                 for person in [x.strip() for x in Item["person"].split(',')]:
                     if person not in tempList:
                         tempList.append(person)
+        else:
+            tempList = [x.strip() for x in people.split(',')]
         for t in tempList:
             secTempList.append({"name" : t,
                                 "owed" : 0
