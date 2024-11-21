@@ -14,32 +14,27 @@
             margin: 0;
             padding: 20px;
         }
-
         h1 {
             font-family: 'Arial Black', sans-serif;
             font-size: 2em;
             color: #007BFF;
             margin-bottom: 20px;
         }
-
         nav {
             background-color: #007BFF;
             padding: 10px;
             margin-bottom: 20px;
             border-radius: 5px;
         }
-
         nav a {
             margin-right: 15px;
             text-decoration: none;
             color: #ffffff;
             transition: color 0.3s ease;
         }
-
         nav a:hover {
             color: #e4e4e4;
         }
-
         form {
             background-color: #ffffff;
             padding: 20px;
@@ -47,13 +42,11 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
-
         label {
             font-weight: bold;
             margin-top: 15px;
             display: inline-block;
         }
-
         input[type="text"], input[type="number"] {
             width: 100%;
             padding: 10px;
@@ -62,7 +55,6 @@
             border: 1px solid #cccccc;
             border-radius: 4px;
         }
-
         button {
             padding: 8px 16px;
             border: none;
@@ -71,23 +63,19 @@
             font-size: 14px;
             margin: 5px;
         }
-
         button[type="submit"] {
             background-color: #6c757d;
             color: white;
         }
-
         #addItemButton {
             background-color: #6c757d;
             color: white;
         }
-
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
         }
-
         th {
             background-color: #007BFF;
             color: white;
@@ -95,12 +83,10 @@
             text-align: left;
             font-weight: bold;
         }
-
         td {
             padding: 8px;
             border: 1px solid #ddd;
         }
-
         .delete-button {
             color: red;
             cursor: pointer;
@@ -109,11 +95,9 @@
             display: flex;
             justify-content: center;
         }
-
         #itemizedSection {
             margin-top: 20px;
         }
-
         #itemizedTable input {
             width: 100%;
             padding: 8px;
@@ -121,7 +105,6 @@
             border-radius: 4px;
             box-sizing: border-box;
         }
-
         .checkbox-container {
             margin: 15px 0;
         }
@@ -188,8 +171,21 @@
     <script>
         function toggleItemizedSection() {
             const itemizedSection = document.getElementById('itemizedSection');
-            itemizedSection.style.display = document.getElementById('itemized').checked ? 'block' : 'none';
-            unitemizedSection.style.display = document.getElementById('itemized').checked ? 'none' : 'block';
+            const unitemizedSection = document.getElementById('unitemizedSection');
+            const priceInput = document.getElementById('price');
+            const peopleInput = document.getElementById('people');
+            
+            if (document.getElementById('itemized').checked) {
+                itemizedSection.style.display = 'block';
+                unitemizedSection.style.display = 'none';
+                priceInput.removeAttribute('required');
+                peopleInput.removeAttribute('required');
+            } else {
+                itemizedSection.style.display = 'none';
+                unitemizedSection.style.display = 'block';
+                priceInput.setAttribute('required', '');
+                peopleInput.setAttribute('required', '');
+            }
         }
 
         function addItemizedExpenseRow() {
@@ -213,33 +209,19 @@
             .then(response => response.json())
             .then(data => {
                 const r_tableBody = document.getElementById('r_tableBody');
-                r_tableBody.innerHTML = ''; // Clear the table body
+                r_tableBody.innerHTML = '';
         
                 data.receipts.forEach((expense, index) => {
                     const row = document.createElement('tr');
-        
-                    // Main row with basic information and toggle button for itemized receipts
                     row.innerHTML = `
-                        <td style="
-                            padding: 0;
-                            margin: 0;
-                            line-height: 1; /* Minimize vertical space */
-                            width: 30px; /* Set a fixed width for the column */
-                            text-align: center; /* Optional: centers the text */
-                            ">${expense.id}
-                        </td>
+                        <td style="padding: 0; margin: 0; line-height: 1; width: 30px; text-align: center;">${expense.id}</td>
                         <td>
                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                 <span>${expense.name}</span>
                                 ${expense.itemized ? `<button onclick="toggleItems(${index})">Show Items</button>` : ""}
                             </div>
                             <div id="items-${index}" style="display: none; margin-top: 10px;">
-                                <table style="
-                                    width: 50%;
-                                    background-color: #e0e2e0;
-                                    border-collapse: collapse;
-                                    margin-left: auto;
-                                ">
+                                <table style="width: 50%; background-color: #e0e2e0; border-collapse: collapse; margin-left: auto;">
                                     ${expense.items.map(item => `
                                         <tr>
                                             <td>${item.name}</td>
@@ -258,13 +240,10 @@
             .catch(error => console.error('Error fetching data:', error));
         }
         
-        // Toggle visibility function
         function toggleItems(index) {
             const itemDiv = document.getElementById(`items-${index}`);
             itemDiv.style.display = itemDiv.style.display === "none" ? "block" : "none";
         }
-        
-        
 
         document.getElementById('expenseForm').addEventListener('submit', function(event) {
             event.preventDefault();
