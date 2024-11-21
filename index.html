@@ -158,92 +158,184 @@
     <div class="expense-table">
       <h2>Expense Table</h2>
       <table>
-          <thead>
-              <tr>
-                  <th>Expense</th>
-                  <th>Amount</th>
-                  <th>People</th>
-              </tr>
-          </thead>
-          <tbody id="tableBody">
-              <tr>
-                  <td onclick="this.querySelector('.dropdown').classList.toggle('show');">
-                      Sushi Dinner <button>Show Details</button>
-                      <div class='dropdown' style='display:none;'>
-                          <ul>
-                              <li>California Roll - $10.00</li>
-                              <li>Tuna Sashimi - $15.00</li>
-                              <li>Salmon Nigiri - $12.00</li>
-                              <li>Tempura Uramaki - $11.00</li>
-                              <li>Spicy Tuna Bowl - $20.00</li>
-                          </ul>
-                      </div>
-                  </td>
-                  <td>$80.00</td>
-                  <td>Travis</td>
-              </tr>
-              <tr><td>Uber</td><td>$45.50</td><td>Anthony</td></tr>
-              <tr><td>Museum Tickets</td><td>$75.25</td><td>Nyan</td></tr>
-          </tbody>
-      </table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody id="r_tableBody">
+        </tbody>
+    </table>
     </div>
 
     <script>
-      const expenses = [
-          { name: 'Travis', amount: 80.00 },
-          { name: 'Anthony', amount: 45.50 },
-          { name: 'Nyan', amount: 75.25 },
-      ];
+        // Fetch the JSON file from the separate folder
+        fetch('/receipt_data2.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                displaySummary(data);
+            })
+            .catch(error => console.error('Error fetching the JSON file:', error));
 
-      const totalAmount = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+        function displaySummary(data) {
+            const summaryTableBody = document.getElementById('summaryTableBody');
+            const totalAmountElement = document.getElementById('totalAmount');
 
-      const summaryTableBody = document.getElementById('summaryTableBody');
-      const totalAmountElement = document.getElementById('totalAmount');
+            const groupTotals = {};
+            let totalAmount = 0;
 
-      expenses.forEach(expense => {
-          const row = document.createElement('tr');
-          row.innerHTML = `<td>${expense.name}</td><td>$${expense.amount.toFixed(2)}</td>`;
-          summaryTableBody.appendChild(row);
-      });
+            // Aggregate amounts owed by each person
+            data.receipts.forEach(receipt => {
+                receipt.group.forEach(person => {
+                    if (person.name) {
+                        groupTotals[person.name] = (groupTotals[person.name] || 0) + person.owed;
+                        totalAmount += person.owed;
+                    }
+                });
+            });
 
-      totalAmountElement.textContent = totalAmount.toFixed(2);
+            // Populate the summary table
+            Object.entries(groupTotals).forEach(([name, amount]) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${name}</td><td>$${amount.toFixed(2)}</td>`;
+                summaryTableBody.appendChild(row);
+            });
 
-      const ctx = document.getElementById('pieChart').getContext('2d');
-      new Chart(ctx, {
-          type:'pie',
-          data:{
-              labels:expenses.map(expense=>expense.name),
-              datasets:[{
-                  data:expenses.map(expense=>expense.amount),
-                  backgroundColor:[
-                      '#FF6384','#36A2EB','#FFCE56','#4BC0C0','#9966FF','#FF9F40',
-                      '#FF6384','#36A2EB','#FFCE56'
-                  ]
-              }]
-          },
-          options:{
-              responsive:true,
-              plugins:{
-                  tooltip:{
-                      callbacks:{
-                          label:function(context){
-                              const label=context.label||'';
-                              const value=context.parsed||0; 
-                              const percentage=((value/totalAmount)*100).toFixed(1);
-                              return `${label}: $${value.toFixed(2)} (${percentage}%)`;
-                          }
-                      }
-                  }
-              }
-          }
-      });
-      
+            // Update the total amount
+            totalAmountElement.textContent = totalAmount.toFixed(2);
+
+            // Create the pie chart
+            const ctx = document.getElementById('pieChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(groupTotals),
+                    datasets: [{
+                        data: Object.values(groupTotals),
+                        backgroundColor: [
+                            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40',
+                            '#FF6384', '#36A2EB', '#FFCE56'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed || 0;
+                                    const percentage = ((value / totalAmount) * 100).toFixed(1);
+                                    return `${label}: $${value.toFixed(2)} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
       document.querySelectorAll('.dropdown').forEach(function(dropdown) {
           dropdown.previousElementSibling.addEventListener('click', function() {
               const display = dropdown.style.display;
               dropdown.style.display = display === 'none' ? 'block' : 'none';
           });
       });
+
+        function toggleItemizedSection() {
+            const itemizedSection = document.getElementById('itemizedSection');
+            itemizedSection.style.display = document.getElementById('itemized').checked ? 'block' : 'none';
+            unitemizedSection.style.display = document.getElementById('itemized').checked ? 'none' : 'block';
+        }
+
+        function addItemizedExpenseRow() {
+            const itemizedTable = document.getElementById('itemizedTable').getElementsByTagName('tbody')[0];
+            const row = itemizedTable.insertRow(-1);
+            row.innerHTML = `
+                <td><input type="text" name="itemName[]" required></td>
+                <td><input type="number" name="itemPrice[]" step="0.01" required></td>
+                <td><input type="text" name="itemPerson[]" required></td>
+                <td><span class="delete-button" onclick="deleteItemizedExpenseRow(this)">×</span></td>
+            `;
+        }
+
+        function deleteItemizedExpenseRow(button) {
+            const row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
+
+        function loadExpenses() {
+            fetch('/receipt_data2.json')
+            .then(response => response.json())
+            .then(data => {
+                const r_tableBody = document.getElementById('r_tableBody');
+                r_tableBody.innerHTML = ''; // Clear the table body
+        
+                data.receipts.forEach((expense, index) => {
+                    const row = document.createElement('tr');
+        
+                    // Main row with basic information and toggle button for itemized receipts
+                    row.innerHTML = `
+                        <td style="
+                            padding: 0;
+                            margin: 0;
+                            line-height: 1; /* Minimize vertical space */
+                            width: 30px; /* Set a fixed width for the column */
+                            text-align: center; /* Optional: centers the text */
+                            ">${expense.id}
+                        </td>
+                        <td>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>${expense.name}</span>
+                                ${expense.itemized ? `<button onclick="toggleItems(${index})">Show Items</button>` : ""}
+                            </div>
+                            <div id="items-${index}" style="display: none; margin-top: 10px;">
+                                <table style="
+                                    width: 50%;
+                                    background-color: #e0e2e0;
+                                    border-collapse: collapse;
+                                    margin-left: auto;
+                                ">
+                                    ${expense.items.map(item => `
+                                        <tr>
+                                            <td>${item.name}</td>
+                                            <td style="text-align: middle;">$${item.price.toFixed(2)}</td>
+                                            <td>${item.people}</td>
+                                        </tr>
+                                    `).join('')}
+                                </table>
+                            </div>
+                        </td>
+                        <td>$${expense.total.toFixed(2)}</td>
+                    `;
+                    r_tableBody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        }
+        
+        // Toggle visibility function
+        function toggleItems(index) {
+            const itemDiv = document.getElementById(`items-${index}`);
+            itemDiv.style.display = itemDiv.style.display === "none" ? "block" : "none";
+        }
+
+        document.querySelectorAll('.dropdown').forEach(function(dropdown) {
+            dropdown.previousElementSibling.addEventListener('click', function() {
+                const display = dropdown.style.display;
+                dropdown.style.display = display === 'none' ? 'block' : 'none';
+            });
+        });
+
+        window.onload = loadExpenses;
     </script>
 
 </body>

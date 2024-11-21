@@ -253,7 +253,28 @@
                 }
             ],
             "total": 42
+        },
+        {
+            "name": "November",
+            "itemized": false,
+            "id": 7,
+            "items": [
+                {
+                    "itemID": 0,
+                    "name": "November",
+                    "price": 1234.0,
+                    "people": [
+                        "David"
+                    ]
+                }
+            ],
+            "group": [
+                {
+                    "name": "David",
+                    "owed": 1234.0
+                }
+            ],
+            "total": 1234.0
         }
-    ],
-    "peopleList": []
+    ]
 }
