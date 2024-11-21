@@ -291,9 +291,15 @@
                 return response.json();
             })
             .then(data => {
-                loadExpenses();
+                // Reset the form
                 document.getElementById('expenseForm').reset();
+                // Reset the sections visibility
                 document.getElementById('itemizedSection').style.display = 'none';
+                document.getElementById('unitemizedSection').style.display = 'block';
+                // Clear any itemized rows
+                document.getElementById('itemizedTable').getElementsByTagName('tbody')[0].innerHTML = '';
+                // Reload expenses
+                loadExpenses();
             })
             .catch(error => console.error('Error adding receipt:', error));
         });
