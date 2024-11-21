@@ -162,6 +162,7 @@
                 <th>ID</th>
                 <th>Name</th>
                 <th>Total</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody id="r_tableBody">
@@ -204,6 +205,21 @@
             row.parentNode.removeChild(row);
         }
 
+        function deleteExpense(id) {
+            if (confirm('Are you sure you want to delete this expense?')) {
+                fetch(`/delete_receipt/${id}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    loadExpenses();
+                })
+                .catch(error => console.error('Error deleting expense:', error));
+            }
+        }
+
         function loadExpenses() {
             fetch('/receipt_data2.json')
             .then(response => response.json())
@@ -214,7 +230,9 @@
                 data.receipts.forEach((expense, index) => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td style="padding: 0; margin: 0; line-height: 1; width: 30px; text-align: center;">${expense.id}</td>
+                        <td style="padding: 0; margin: 0; line-height: 1; width: 30px; text-align: center;">
+                            ${expense.id}
+                        </td>
                         <td>
                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                 <span>${expense.name}</span>
@@ -233,6 +251,9 @@
                             </div>
                         </td>
                         <td>$${expense.total.toFixed(2)}</td>
+                        <td>
+                            <button onclick="deleteExpense(${expense.id})" style="background-color: #dc3545; color: white;">Delete</button>
+                        </td>
                     `;
                     r_tableBody.appendChild(row);
                 });
@@ -291,14 +312,10 @@
                 return response.json();
             })
             .then(data => {
-                // Reset the form
                 document.getElementById('expenseForm').reset();
-                // Reset the sections visibility
                 document.getElementById('itemizedSection').style.display = 'none';
                 document.getElementById('unitemizedSection').style.display = 'block';
-                // Clear any itemized rows
                 document.getElementById('itemizedTable').getElementsByTagName('tbody')[0].innerHTML = '';
-                // Reload expenses
                 loadExpenses();
             })
             .catch(error => console.error('Error adding receipt:', error));
