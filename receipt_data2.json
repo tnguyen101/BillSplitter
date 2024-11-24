@@ -73,48 +73,9 @@
             "total": 14.99
         },
         {
-            "name": "Mcdonalds",
-            "itemized": true,
-            "id": 2,
-            "items": [
-                {
-                    "itemID": 0,
-                    "name": "Burger meal",
-                    "price": 13.99,
-                    "people": [
-                        "Harris"
-                    ]
-                },
-                {
-                    "itemID": 1,
-                    "name": "Coffee",
-                    "price": 12.99,
-                    "people": [
-                        "Harris",
-                        "Travis"
-                    ]
-                }
-            ],
-            "group": [
-                {
-                    "name": "Anthony",
-                    "owed": 0
-                },
-                {
-                    "name": "Harris",
-                    "owed": 20.485
-                },
-                {
-                    "name": "Travis",
-                    "owed": 6.495
-                }
-            ],
-            "total": 26.98
-        },
-        {
             "name": "Lunch",
             "itemized": true,
-            "id": 3,
+            "id": 2,
             "items": [
                 {
                     "itemID": 0,
@@ -154,7 +115,7 @@
         {
             "name": "Sushi restaurant",
             "itemized": false,
-            "id": 4,
+            "id": 3,
             "items": [
                 {
                     "itemID": 0,
@@ -184,80 +145,9 @@
             "total": 30.0
         },
         {
-            "name": "test",
-            "itemized": false,
-            "id": 5,
-            "items": [
-                {
-                    "itemID": 0,
-                    "name": "test",
-                    "price": 123.0,
-                    "people": [
-                        "Nyan",
-                        "Travis",
-                        "Anthony"
-                    ]
-                }
-            ],
-            "group": [
-                {
-                    "name": "Nyan",
-                    "owed": 41.0
-                },
-                {
-                    "name": "Travis",
-                    "owed": 41.0
-                },
-                {
-                    "name": "Anthony",
-                    "owed": 41.0
-                }
-            ],
-            "total": 123.0
-        },
-        {
-            "name": "test",
-            "itemized": true,
-            "id": 6,
-            "items": [
-                {
-                    "itemID": 0,
-                    "name": "Tuna",
-                    "price": 12,
-                    "people": [
-                        "Travis",
-                        "Nyan"
-                    ]
-                },
-                {
-                    "itemID": 1,
-                    "name": "Rolls",
-                    "price": 15,
-                    "people": [
-                        "Nyan"
-                    ]
-                },
-                {
-                    "itemID": 2,
-                    "name": "Salmond",
-                    "price": 15,
-                    "people": [
-                        "Travis"
-                    ]
-                }
-            ],
-            "group": [
-                {
-                    "name": "",
-                    "owed": 0
-                }
-            ],
-            "total": 42
-        },
-        {
             "name": "November",
             "itemized": false,
-            "id": 7,
+            "id": 4,
             "items": [
                 {
                     "itemID": 0,
@@ -275,93 +165,7 @@
                 }
             ],
             "total": 1234.0
-        },
-        {
-            "name": "test",
-            "itemized": true,
-            "id": 8,
-            "items": [
-                {
-                    "itemID": 0,
-                    "name": "Tuna",
-                    "price": 12,
-                    "people": [
-                        "Travis",
-                        "Nyan"
-                    ]
-                },
-                {
-                    "itemID": 1,
-                    "name": "Rolls",
-                    "price": 15,
-                    "people": [
-                        "Nyan"
-                    ]
-                },
-                {
-                    "itemID": 2,
-                    "name": "Salmond",
-                    "price": 15,
-                    "people": [
-                        "Travis"
-                    ]
-                }
-            ],
-            "group": [
-                {
-                    "name": "Travis",
-                    "owed": 21.0
-                },
-                {
-                    "name": "Nyan",
-                    "owed": 21.0
-                }
-            ],
-            "total": 42
-        },
-        {
-            "name": "test",
-            "itemized": true,
-            "id": 9,
-            "items": [
-                {
-                    "itemID": 0,
-                    "name": "Tuna",
-                    "price": 12,
-                    "people": [
-                        "Travis",
-                        "Nyan"
-                    ]
-                },
-                {
-                    "itemID": 1,
-                    "name": "Rolls",
-                    "price": 15,
-                    "people": [
-                        "Nyan"
-                    ]
-                },
-                {
-                    "itemID": 2,
-                    "name": "Salmond",
-                    "price": 15,
-                    "people": [
-                        "Travis"
-                    ]
-                }
-            ],
-            "group": [
-                {
-                    "name": "Travis",
-                    "owed": 21.0
-                },
-                {
-                    "name": "Nyan",
-                    "owed": 21.0
-                }
-            ],
-            "total": 42
         }
     ],
-    "peopleList" : []
+    "peopleList": []
 }

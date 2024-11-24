@@ -73,6 +73,37 @@ app.post('/get_summary.py', (req, res) => {
   // not sure on what variables are needed
 });
 
+app.delete('/remove_receipt', (req, res) => {
+  const id = req.body.id.toString();
+  console.log('Received request to delete ID:', id);
+  // Check if the id is provided
+  if (!id) {
+      return res.status(400).json({ message: 'Receipt ID is required' });
+  }
+
+  // Spawn the Python process to run the remove_receipt.py script
+  const pythonProcess = spawn('python', ['remove_receipt.py', id]);
+
+  // Handle standard output from the Python script
+  pythonProcess.stdout.on('data', (data) => {
+      console.log(`stdout: ${data}`);
+  });
+
+  // Handle standard error output from the Python script
+  pythonProcess.stderr.on('data', (data) => {
+      console.error(`stderr: ${data}`);
+      return res.status(500).send(`Error occurred: ${data}`);
+  });
+
+  // Handle the process exit
+  pythonProcess.on('close', (code) => {
+      if (code === 0) {
+          res.status(200).json({ message: 'Receipt removed successfully' });
+      } else {
+          res.status(500).json({ message: 'Failed to remove receipt' });
+      }
+  });
+});
 // Start the server
 const port = 3000;
 app.listen(port, () => {
