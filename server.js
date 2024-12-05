@@ -75,7 +75,6 @@ app.post('/get_summary.py', (req, res) => {
 
 app.delete('/remove_receipt', (req, res) => {
   const id = req.body.id.toString();
-  console.log('Received request to delete ID:', id);
   // Check if the id is provided
   if (!id) {
       return res.status(400).json({ message: 'Receipt ID is required' });
