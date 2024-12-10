@@ -69,10 +69,6 @@ app.post('/edit_receipt', (req, res) => {
   const action = 0;
 });
 
-app.post('/get_summary.py', (req, res) => {
-  // not sure on what variables are needed
-});
-
 app.delete('/remove_receipt', (req, res) => {
   const id = req.body.id.toString();
   // Check if the id is provided
